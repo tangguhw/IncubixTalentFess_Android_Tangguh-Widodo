@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/home',
       routes: {
         '/home': (context) => HomeScreen(),
-        'formulir': (context) => FormulirScreen()
+        '/formulir': (context) => FormulirScreen()
       },
     );
   }

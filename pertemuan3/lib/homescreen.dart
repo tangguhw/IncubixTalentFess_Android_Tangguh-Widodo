@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pertemuan3/formulir_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,7 +23,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ElevatedButton(
               // style: ElevatedButton.styleFrom(
               // backgroundColor: Colors.amber, padding: EdgeInsets.all(30)),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/formulir');
+              },
               child: const Text("Elevated Button")),
           const SizedBox(
             height: 10,
@@ -33,7 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
           OutlinedButton(
               style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: Colors.amber)),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => FormulirScreen()));
+              },
               child: const Text(
                 "Submit",
                 style: TextStyle(color: Colors.amber),
