@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pertemuan3/formulir_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -46,7 +47,18 @@ class _HomeScreenState extends State<HomeScreen> {
               )),
 
           //Text Button
-          TextButton(onPressed: () {}, child: const Text("Text Button"))
+          TextButton(onPressed: () {}, child: const Text("Text Button")),
+
+          Text(
+            "INCUBIX Pertemuan 3",
+            style:
+                GoogleFonts.poppins(textStyle: const TextStyle(fontSize: 30)),
+          ),
+          Text(
+            "Incubix Pertemuan 3",
+            style:
+                GoogleFonts.comicNeue(textStyle: const TextStyle(fontSize: 30)),
+          ),
         ],
       ),
     );
