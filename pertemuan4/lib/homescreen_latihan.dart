@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pertemuan4/model/notes_model.dart';
+import 'package:pertemuan4/widget/button_widget.dart';
+
+List<NotesModel> catList = [];
 
 class HomeScreenLat extends StatefulWidget {
   const HomeScreenLat({super.key});
@@ -11,6 +15,26 @@ class HomeScreenLat extends StatefulWidget {
 class _HomeScreenLatState extends State<HomeScreenLat> {
   DateTime dueDate = DateTime.now();
   final currentDate = DateTime.now();
+  final judulController = TextEditingController();
+  final descController = TextEditingController();
+
+  void dispose() {
+    judulController.dispose();
+    descController.dispose();
+    super.dispose();
+  }
+
+  void addList() {
+    catList.add(
+        NotesModel(title: judulController.text, desc: descController.text));
+    reset();
+    setState(() {});
+  }
+
+  void reset() {
+    judulController.clear();
+    descController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +95,66 @@ class _HomeScreenLatState extends State<HomeScreenLat> {
                 Text(DateFormat('dd.MM.yy').format(dueDate)),
               ],
             ),
+          ),
+          Container(
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                  color: Colors.lightBlue.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(20)),
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller: judulController,
+                    decoration: const InputDecoration(
+                        label: Text("Judul"), hintText: "Masukkan judul"),
+                  ),
+                  TextFormField(
+                    controller: descController,
+                    maxLines: 5,
+                    decoration: const InputDecoration(
+                        label: Text("Deskripsi"),
+                        hintText: "Masukkan deskripsi"),
+                  ),
+                  ButtonWidget(
+                      title: "Save",
+                      onPressed: () {
+                        addList();
+                      })
+                ],
+              )),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.4,
+            child: ListView.builder(
+                itemCount: catList.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 10),
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        color: Colors.amber.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text("Judul: "),
+                            Text(catList[index].title),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text("Isi Catatan: "),
+                            Text(catList[index].desc ?? ""),
+                          ],
+                        )
+                      ],
+                    ),
+                  );
+                }),
           )
         ],
       ),

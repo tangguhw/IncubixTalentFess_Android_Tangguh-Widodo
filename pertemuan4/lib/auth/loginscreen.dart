@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pertemuan4/auth/registerscreen.dart';
+import 'package:pertemuan4/homescreen_latihan.dart';
 import 'package:pertemuan4/widget/button_widget.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -43,7 +44,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: const InputDecoration(
                     label: Text("Password: "), hintText: "Masukkan Password"),
               ),
-              ButtonWidget(title: "Login")
+              ButtonWidget(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomeScreenLat()));
+                  },
+                  title: "Login")
             ],
           ),
         ),

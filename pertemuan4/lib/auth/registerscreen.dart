@@ -10,6 +10,10 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final namaEcd = TextEditingController();
+  final emailEcd = TextEditingController();
+  final noHpEcd = TextEditingController();
+  final passEcd = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,26 +32,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 style: TextStyle(color: Colors.grey),
               ),
               TextFormField(
+                controller: namaEcd,
                 decoration: const InputDecoration(
                     label: Text("Nama: "), hintText: "Contoh: Tangguh"),
               ),
               TextFormField(
+                controller: emailEcd,
                 decoration: const InputDecoration(
                     label: Text("Email: "),
                     hintText: "Contoh: Tangguh@gmail.com"),
               ),
               TextFormField(
+                controller: noHpEcd,
                 decoration: const InputDecoration(
                     label: Text("Nomor HP: "),
                     hintText: "Contoh: 081228279810"),
               ),
               TextFormField(
+                controller: passEcd,
                 obscureText: true,
                 decoration: const InputDecoration(
                     label: Text("Password: "),
                     hintText: "Contoh: Masukkan Password"),
               ),
-              ButtonWidget(title: "Register")
+              ButtonWidget(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()));
+                  },
+                  title: "Register")
             ],
           ),
         ),
