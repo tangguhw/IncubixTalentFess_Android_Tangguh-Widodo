@@ -38,7 +38,30 @@ class _HomeScreenState extends State<HomeScreen> {
                 isChecked = value!;
                 print(isChecked);
               });
-            })
+            }),
+
+        //dialog
+        ElevatedButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text("Pertemuan 5"),
+                      content:
+                          const Text("Apakah anda mau menghapus item ini?"),
+                      actions: [
+                        TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text("Batal")),
+                        TextButton(onPressed: () {}, child: const Text("Ya"))
+                      ],
+                    );
+                  });
+            },
+            child: Text("Dialog"))
       ]),
     );
   }
