@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreenLat extends StatefulWidget {
+  const HomeScreenLat({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreenLat> createState() => _HomeScreenLatState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenLatState extends State<HomeScreenLat> {
   DateTime dueDate = DateTime.now();
   final currentDate = DateTime.now();
 
