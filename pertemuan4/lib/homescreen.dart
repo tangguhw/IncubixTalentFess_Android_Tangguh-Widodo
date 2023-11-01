@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -8,6 +9,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  DateTime dueDate = DateTime.now();
+  final currentDate = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +41,39 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      body: ListView(),
+      body: ListView(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Date"),
+                    TextButton(
+                        onPressed: () async {
+                          final selectDate = await showDatePicker(
+                              context: context,
+                              initialDate: currentDate,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(currentDate.year + 5));
+                          setState(() {
+                            if (selectDate != null) {
+                              dueDate = selectDate;
+                            }
+                          });
+                        },
+                        child: Text("Select"))
+                  ],
+                ),
+                Text(DateFormat('dd.MM.yy').format(dueDate)),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
