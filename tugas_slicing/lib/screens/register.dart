@@ -11,8 +11,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  final ApiClient apiClient = ApiClient(); // Menggunakan instance ApiClient
+  final ApiClient apiClient = ApiClient();
+  bool isLoading = false; // Added isLoading state
 
   Future<void> registerUser() async {
     final String name = nameController.text;
@@ -25,6 +25,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       'password': password,
     };
 
+    setState(() {
+      isLoading = true; // Show loading indicator
+    });
+
     try {
       final response = await apiClient.registerUser(userData);
 
@@ -32,7 +36,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         final responseData = response.data;
         final message = responseData['message'];
 
-        // Tampilkan pesan sukses atau navigasi ke layar lain
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -54,7 +57,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         final responseData = response.data;
         final message = responseData['message'];
 
-        // Tampilkan pesan kesalahan
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -74,8 +76,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
         );
       }
     } catch (error) {
-      // Handle error (misalnya masalah jaringan)
       print('Error: $error');
+      // Handle error and show an error message
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text('An error occurred. Please try again.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    } finally {
+      setState(() {
+        isLoading = false; // Hide loading indicator
+      });
     }
   }
 
@@ -105,17 +128,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
               obscureText: true,
             ),
             ElevatedButton(
-              onPressed: registerUser,
-              child: Text('Register'),
+              onPressed: isLoading
+                  ? null
+                  : registerUser, // Disable button when loading
+              child: isLoading
+                  ? const CircularProgressIndicator()
+                  : Text('Register'), // Show loading indicator in button
             ),
-            SizedBox(height: 16), // Spasi vertikal
+            SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text("Sudah punya akun?"),
                 InkWell(
                   onTap: () {
-                    // Navigasi ke layar LoginScreen saat teks "Login" ditekan
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => LoginScreen()),
@@ -124,7 +150,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: Text(
                     "Login",
                     style: TextStyle(
-                      color: Colors.blue, // Warna tautan
+                      color: Colors.blue,
                     ),
                   ),
                 ),

@@ -13,12 +13,16 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  final ApiClient apiClient = ApiClient(); // Using the ApiClient instance
+  final ApiClient apiClient = ApiClient();
+  bool isLoading = false; // Added isLoading state
 
   Future<void> loginUser() async {
     final String email = emailController.text;
     final String password = passwordController.text;
+
+    setState(() {
+      isLoading = true; // Show loading indicator
+    });
 
     try {
       final response = await apiClient.login(email, password);
@@ -27,8 +31,6 @@ class _LoginScreenState extends State<LoginScreen> {
         final responseData = response.data;
         final message = responseData['message'];
 
-        // Show success message
-        // ignore: use_build_context_synchronously
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -39,7 +41,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
-                    // Navigate to the HomeScreen after successful login
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -60,8 +61,6 @@ class _LoginScreenState extends State<LoginScreen> {
         final responseData = response.data;
         final message = responseData['message'];
 
-        // Show error message
-        // ignore: use_build_context_synchronously
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -81,8 +80,29 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       }
     } catch (error) {
-      // Handle error (e.g., network issues)
       print('Error: $error');
+      // Handle error and show an error message
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text('An error occurred. Please try again.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    } finally {
+      setState(() {
+        isLoading = false; // Hide loading indicator
+      });
     }
   }
 
@@ -108,17 +128,19 @@ class _LoginScreenState extends State<LoginScreen> {
               obscureText: true,
             ),
             ElevatedButton(
-              onPressed: loginUser,
-              child: const Text('Login'),
+              onPressed:
+                  isLoading ? null : loginUser, // Disable button when loading
+              child: isLoading
+                  ? const CircularProgressIndicator()
+                  : const Text('Login'), // Show loading indicator in button
             ),
-            const SizedBox(height: 16), // Vertical spacing
+            const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text("Belum punya akun?"),
+                const Text("Belum punya akun? "),
                 InkWell(
                   onTap: () {
-                    // Navigate to the RegisterScreen when "Register" is tapped
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => RegisterScreen()),
@@ -127,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: const Text(
                     "Register",
                     style: TextStyle(
-                      color: Colors.blue, // Link color
+                      color: Colors.blue,
                     ),
                   ),
                 ),
