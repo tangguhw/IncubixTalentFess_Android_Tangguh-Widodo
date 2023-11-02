@@ -12,8 +12,8 @@ final dio = Dio();
 //   final res = await dio.get("");
 // }
 
-Future<AlquranModel> getAlquran() async {
-  final res = await dio.get("https://equran.id/api/v2/surat/7");
+Future<AlquranModel> getAlquran(int id) async {
+  final res = await dio.get("https://equran.id/api/v2/surat/$id");
   print(res);
   return AlquranModel.fromJson(res.data["data"]);
 }

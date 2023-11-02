@@ -10,6 +10,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int id = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,15 +19,29 @@ class _HomeScreenState extends State<HomeScreen> {
           Center(
             child: ElevatedButton(
                 onPressed: () {
-                  getAlquran();
+                  getAlquran(1);
                 },
                 child: const Text("Test API")),
           ),
           const SizedBox(
             height: 10,
           ),
+          SizedBox(
+            height: 500,
+            child: ListView.builder(
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return TextButton(
+                      onPressed: () {
+                        setState(() {
+                          id = index + 1;
+                        });
+                      },
+                      child: Text("Surat ke - ${index + 1}"));
+                }),
+          ),
           FutureBuilder<AlquranModel>(
-              future: getAlquran(),
+              future: getAlquran(id),
               builder: ((context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
